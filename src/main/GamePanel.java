@@ -11,12 +11,13 @@ public class GamePanel extends JPanel {
     private MyGame myGame;
 
     public GamePanel(MyGame myGame) {
+        addKeyListener(new Keyboard(this));
         this.myGame = myGame;
         mouseInput = new Mouse(this);
-        addKeyListener(new Keyboard(this));
         addMouseListener(mouseInput);
         addMouseMotionListener(mouseInput);
         setPanelSize();
+
     }
 
     public MyGame getMyGame() {

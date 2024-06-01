@@ -59,11 +59,11 @@ public class LoadSave {
 
         switch (type) {
             case BACKGROUND_0:
-                return "./res/Background_0.png";
+                return "src/res/Background_0.png";
             case BACKGROUND_1:
-                return "./res/Background_1.png";
+                return "src/res/Background_1.png";
             case MY_LEVEL:
-                return "./res/Level_1.png";
+                return "src/res/Level_1.png";
         }
         return null;
     }

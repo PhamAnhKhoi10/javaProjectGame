@@ -13,11 +13,13 @@ public class LevelHandler {
     private MyGame myGame;
     private BufferedImage layer1;
     private BufferedImage layer2;
+    private int[][] tiles;
 
-    public LevelHandler(MyGame myGame) {
+    public LevelHandler(MyGame myGame, int[][] tiles) {
         this.myGame = myGame;
         this.layer1 = LoadSave.getMap(pathOfMap(BACKGROUND_0));
         this.layer2 = LoadSave.getMap(pathOfMap(BACKGROUND_1));
+        this.tiles = tiles;
     }
 
     public void draw(Graphics g) {
@@ -25,4 +27,24 @@ public class LevelHandler {
         g.drawImage(layer2, 0, 0, myGame.WIDTH, myGame.HEIGHT,null);
     }
 
+
+    public void check(int[][] mapData, Graphics g) {
+        for (int i = 0; i < mapData.length; i++) {
+            for (int j = 0; j < mapData[i].length; j++) {
+                if (mapData[i][j] == 1) {
+                    g.setColor(Color.RED);
+                    g.drawRect(j * 32, i * 32, 32, 32);
+                } else {
+//                    g.setColor(Color.GREEN);
+//                    g.drawRect(j * 32, i * 32, 32, 32);
+                    ;
+                }
+
+            }
+        }
+    }
+
+    public int[][] getTiles() {
+        return tiles;
+    }
 }

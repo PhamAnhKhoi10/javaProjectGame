@@ -1,7 +1,9 @@
 package main;
 
 import entities.Player;
+import gamestates.Gamestate;
 import levels.Level1;
+import levels.LevelData;
 import levels.LevelHandler;
 
 import java.awt.*;
@@ -18,9 +20,10 @@ public class MyGame implements Runnable {
 
     // Tile constants
     public final static int TILES_DEFAULT_SIZE = 32;
-    public final static double SCALE = 2;
-    public final static int TILES_WIDTH = 24;
-    public final static int TILES_HEIGHT = 13;
+    public final static float SCALE = 1.0f;
+    public final static float PLAYER_SCALE = 2.0f;
+    public final static int TILES_WIDTH = 48;
+    public final static int TILES_HEIGHT = 26;
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public final static int WIDTH = TILES_WIDTH * TILES_SIZE;
     public final static int HEIGHT = TILES_HEIGHT * TILES_SIZE;
@@ -39,8 +42,9 @@ public class MyGame implements Runnable {
 
     // Method to initialize the all objects in the game
     private void initialize() {
-        myPlayer = new Player(50, 7 * 32, (int) (SCALE * 128), (int) (SCALE * 80));
-        level1 = new Level1(this);
+        level1 = new Level1(this, LevelData.getTilesLevel1());
+        myPlayer = new Player(20, 0, (int) (PLAYER_SCALE * 128), (int) (PLAYER_SCALE * 80));
+        myPlayer.setCurrentLevel(level1);   // Set the current level of the player
     }
 
     // Method to start the game thread
@@ -51,14 +55,29 @@ public class MyGame implements Runnable {
 
     // Update the game
     public void update () {
-        myPlayer.update();
-//        levelHandler.update();
+        switch (Gamestate.state) {
+            case PLAY:
+                myPlayer.update();
+                break;
+            case MENU:
+                break;
+            default:
+                break;
+        }
     }
 
     // Draw everything in to the panel (Called in GamePanel class)
     public void render(Graphics g) {
-        level1.draw(g);
-        myPlayer.render(g);
+        switch (Gamestate.state) {
+            case PLAY:
+                level1.draw(g);
+                myPlayer.render(g);
+                break;
+            case MENU:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -84,7 +103,7 @@ public class MyGame implements Runnable {
             previousTime = currentTime;
 
             if (deltaU >= 1) {
-                myPlayer.update();
+                update();
                 update++;
                 deltaU--;
             }

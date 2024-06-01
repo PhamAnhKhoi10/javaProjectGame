@@ -1,11 +1,15 @@
 package entities;
 
+import main.MyGame;
+
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Entity {
     private int x;
     private int y;
-    private Rectangle hitBox;
+
+    private Rectangle2D.Float hitbox;
     private int width;
     private int height;
 
@@ -15,8 +19,23 @@ public abstract class Entity {
         this.y = y;
         this.width = width;
         this.height = height;
-//        this.hitBox =
     }
+
+    protected void initHibox(float x, float y, float width, float height) {
+        this.hitbox = new Rectangle2D.Float(x, y, width, height);
+    }
+
+    // test method
+    public void drawHitbox(Graphics g) {
+        g.setColor(Color.RED);
+        g.drawRect((int)hitbox.x, (int)hitbox.y, (int) hitbox.width, (int) hitbox.height);
+    }
+
+
+    public Rectangle2D.Float getHitbox() {
+        return hitbox;
+    }
+
 
     public void setX(int x) {
         this.x = x;
@@ -56,6 +75,14 @@ public abstract class Entity {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getTileX() {
+        return (int) hitbox.getX() / MyGame.TILES_SIZE;
+    }
+
+    public int getTileY() {
+        return (int) hitbox.getX() / MyGame.TILES_SIZE;
     }
 
     public abstract String pathOfImages(int playerAction);

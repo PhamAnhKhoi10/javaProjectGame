@@ -25,6 +25,8 @@ public class Keyboard implements KeyListener {
             gamePanel.getMyGame().getMyPlayer().setLeft(true);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             gamePanel.getMyGame().getMyPlayer().setRight(true);
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            gamePanel.getMyGame().getMyPlayer().setJump(true);
         }
     }
 
@@ -39,6 +41,8 @@ public class Keyboard implements KeyListener {
             gamePanel.getMyGame().getMyPlayer().setLeft(false);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             gamePanel.getMyGame().getMyPlayer().setRight(false);
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            gamePanel.getMyGame().getMyPlayer().setJump(false);
         }
     }
 }
