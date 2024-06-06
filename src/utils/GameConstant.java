@@ -1,5 +1,7 @@
 package utils;
 
+import main.MyGame;
+
 public class GameConstant {
     public static class Directions {
         public static final int UP = 0;
@@ -17,6 +19,40 @@ public class GameConstant {
         public static final int GRASS_BACKGROUND_2 = 5;
         public static final int SALT = 6;
         public static final int MY_LEVEL = 7;
+    }
+
+    public static class MenuConstants {
+        public static final int BUTTON_MENU = 99;
+        public static final int MENU_BACKGROUND = 100;
+        public static final int PAUSE_BACKGROUND= 101;
+        public static final int SOUND_BUTTON = 102;
+        public static final int URM_BUTTON = 103;
+        public static final int VOLUME_BUTTON = 104;
+        public static final int GAME_TITLE = 105;
+        public static final int WALLPAPER = 106;
+        public static final int ENEMY = 107;
+        public static final int BOSS = 108;
+
+        public static class Buttons {
+            // ===============MENU BUTTONS================
+            public static final int WIDTH_DEFAULT = 140;
+            public static final int HEIGHT_DEFAULT = 56;
+            public static final int WIDTH = (int) (WIDTH_DEFAULT * MyGame.SCALE);
+            public static final int HEIGHT = (int) (HEIGHT_DEFAULT * MyGame.SCALE);
+            // ===============SOUND BUTTONS================
+            public static final int SOUND_SIZE_DEFAULT = 42;
+            public static final int SOUND_SIZE = (int) (SOUND_SIZE_DEFAULT * MyGame.SCALE);
+            // ===============URM BUTTONS================
+            public static final int URM_SIZE_DEFAULT = 56;
+            public static final int URM_SIZE = (int) (URM_SIZE_DEFAULT * MyGame.SCALE);
+            // ===============VOLUME BUTTONS================
+            public static final int VOLUME_WIDTH_DEFAULT = 28;
+            public static final int VOLUME_HEIGHT_DEFAULT = 44;
+            public static final int SLIDER_DEFAULT_WIDTH = 215;
+            public static final int VOLUME_WIDTH = (int) (VOLUME_WIDTH_DEFAULT * MyGame.SCALE);
+            public static final int VOLUME_HEIGHT = (int) (VOLUME_HEIGHT_DEFAULT * MyGame.SCALE);
+            public static final int SLIDER_WIDTH = (int) (SLIDER_DEFAULT_WIDTH * MyGame.SCALE);
+        }
     }
 
 

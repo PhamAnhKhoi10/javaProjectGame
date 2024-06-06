@@ -1,6 +1,5 @@
 package entities;
 
-import levels.LevelData;
 import levels.LevelHandler;
 import main.MyGame;
 import utils.HelpMethods;
@@ -28,7 +27,7 @@ public class Player extends Entity{
     // aniTick is the time between each frame
     // aniIndex is the index of the frame
     // aniSpeed is the speed of the animation
-    private int aniTick, aniIndex, aniSpeed = 10;
+    private int aniTick, aniIndex, aniSpeed = 7;
 
     // Action
     private boolean moving = false, attacking = false, attackingCombo = false;
@@ -40,7 +39,7 @@ public class Player extends Entity{
     // airSpeed is the speed of the player in the air
     private float airSpeed = 0.0f;
     private float gravity = 0.04f * MyGame.PLAYER_SCALE;
-    private float jumpSpeed = -2.25f * MyGame.PLAYER_SCALE;
+    private float jumpSpeed = -3.0f * MyGame.PLAYER_SCALE;
     private float fallSpeedAfterCollision = 0.5f * MyGame.PLAYER_SCALE;
     private boolean inAir = false;
 
@@ -109,9 +108,9 @@ public class Player extends Entity{
         setAnimation();
     }
 
-    public void render(Graphics g) {
-        g.drawImage(subImages[aniIndex], (int) (getHitbox().x - drawOffsetX), (int) (getHitbox().y - drawOffsetY), super.getWidth(),super.getHeight(),null);
-        drawHitbox(g);
+    public void render(Graphics g, int xLevelOffset) {
+        g.drawImage(subImages[aniIndex], (int) (getHitbox().x - drawOffsetX) - xLevelOffset, (int) (getHitbox().y - drawOffsetY), super.getWidth(),super.getHeight(),null);
+        drawHitbox(g, xLevelOffset);
     }
 
     // Update the animation
@@ -176,9 +175,11 @@ public class Player extends Entity{
             jump();
         }
 
-        if (!left && !right && !inAir) {
-            return;
-        }
+       if (!inAir) {
+           if((!left && !right) || (left && right)){
+               return;
+           }
+       }
 
         float xSpeed = 0;
 
@@ -232,6 +233,7 @@ public class Player extends Entity{
     public void updateXPosition(int xSpeed) {
         if (HelpMethods.CanMove(getHitbox().x + xSpeed, getHitbox().y, getHitbox().width, getHitbox().height, getCurrentLevel().getTiles())) {
             getHitbox().x += xSpeed;
+            super.setX((int)getHitbox().x);
 
         } else {
             getHitbox().x = HelpMethods.getXPositionNextToBarrier(getHitbox(), (float) xSpeed);

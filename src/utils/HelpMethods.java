@@ -14,7 +14,7 @@ public class HelpMethods {
 
     private static boolean isSolid(float x, float y,int[][] tiles) {
         // Check if the player is at the edge of the panel / out of bounds
-        if (x < 0 || x >= MyGame.WIDTH) {
+        if (x < 0 || x >= MyGame.WIDTH_OF_WHOLE_LEVEL) {
             return true;
         }
 

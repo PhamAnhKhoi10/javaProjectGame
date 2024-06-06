@@ -21,22 +21,24 @@ public abstract class Entity {
         this.height = height;
     }
 
+    //==================================================================================================
+    // Create the hitbox for detecting collision
     protected void initHibox(float x, float y, float width, float height) {
         this.hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
     // test method
-    public void drawHitbox(Graphics g) {
+    public void drawHitbox(Graphics g, int xLevelOffset) {
         g.setColor(Color.RED);
-        g.drawRect((int)hitbox.x, (int)hitbox.y, (int) hitbox.width, (int) hitbox.height);
+        g.drawRect((int)hitbox.x - xLevelOffset, (int)hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
 
     public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
-
-
+    //==================================================================================================
+    // Setters and Getters
     public void setX(int x) {
         this.x = x;
     }
@@ -85,6 +87,8 @@ public abstract class Entity {
         return (int) hitbox.getX() / MyGame.TILES_SIZE;
     }
 
+    //==================================================================================================
+    // import the images
     public abstract String pathOfImages(int playerAction);
     public abstract void loadAnimations();
 }

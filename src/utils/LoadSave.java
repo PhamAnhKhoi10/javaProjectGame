@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static utils.GameConstant.MenuConstants.*;
 import static utils.GameConstant.mapConstants.*;
 
 public class LoadSave {
@@ -63,7 +64,25 @@ public class LoadSave {
             case BACKGROUND_1:
                 return "src/res/Background_1.png";
             case MY_LEVEL:
-                return "src/res/Level_1.png";
+                return "src/res/level1_long.png";
+            case BUTTON_MENU:
+                return "src/res/button_atlas.png";
+            case MENU_BACKGROUND:
+                return "src/res/Button.png";
+            case PAUSE_BACKGROUND:
+                return "src/res/pause_menu.png";
+            case SOUND_BUTTON:
+                return "src/res/sound_button.png";
+            case URM_BUTTON:
+                return "src/res/urm_buttons.png";
+            case VOLUME_BUTTON:
+                return "src/res/volume_buttons.png";
+            case GAME_TITLE:
+                return "src/res/Title.png";
+            case WALLPAPER:
+                return "src/res/aaaa.jpg";
+            case ENEMY:
+                return "src/res/enemy.png";
         }
         return null;
     }

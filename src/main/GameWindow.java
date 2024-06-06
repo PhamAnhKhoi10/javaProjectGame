@@ -9,6 +9,7 @@ import java.awt.event.WindowFocusListener;
 public class GameWindow {
     private JFrame jFrame;
 
+
     public GameWindow(GamePanel gamePanel) {
         jFrame = new JFrame("MY GAME");
         // Close the window when the close button is clicked
@@ -27,10 +28,12 @@ public class GameWindow {
 
             }
 
+            // The method is automatically called when the window loses focus
             @Override
             public void windowLostFocus(WindowEvent e) {
                 gamePanel.getMyGame().windowFocusLost();
             }
+
         });
     }
 }

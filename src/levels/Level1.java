@@ -19,12 +19,10 @@ public class Level1 extends LevelHandler {
 
     // Draw the level, import image of the level
     @Override
-    public void draw(Graphics g) {
-        super.draw(g);
+    public void draw(Graphics g, int xLevelOffset) {
+        super.draw(g, xLevelOffset);
         this.map = LoadSave.getMap(pathOfMap(MY_LEVEL));
-        g.drawImage(map, 0, 0, MyGame.WIDTH, MyGame.HEIGHT, null);
-        check(LevelData.getTilesLevel1(), g);
+        g.drawImage(map, 0 - xLevelOffset, 0, null);
+        check(LevelData.getTilesLevel1(), g, xLevelOffset);
     }
-
-
 }

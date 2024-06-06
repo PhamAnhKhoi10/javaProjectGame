@@ -1,4 +1,5 @@
 package inputs;
+import gamestates.Gamestate;
 import main.GamePanel;
 import static utils.GameConstant.Directions.*;
 import java.awt.event.*;
@@ -10,6 +11,8 @@ public class Keyboard implements KeyListener {
         this.gamePanel = gamePanel;
     }
 
+    // if the state is MENU, call these method from the Menu class
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -17,32 +20,29 @@ public class Keyboard implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-            gamePanel.getMyGame().getMyPlayer().setUp(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-            gamePanel.getMyGame().getMyPlayer().setDown(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-            gamePanel.getMyGame().getMyPlayer().setLeft(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-            gamePanel.getMyGame().getMyPlayer().setRight(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            gamePanel.getMyGame().getMyPlayer().setJump(true);
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().keyPressed(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().keyPressed(e);
+                break;
+            default:
+                break;
         }
     }
 
-
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-            gamePanel.getMyGame().getMyPlayer().setUp(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-            gamePanel.getMyGame().getMyPlayer().setDown(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-            gamePanel.getMyGame().getMyPlayer().setLeft(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-            gamePanel.getMyGame().getMyPlayer().setRight(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            gamePanel.getMyGame().getMyPlayer().setJump(false);
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().keyReleased(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().keyReleased(e);
+                break;
+            default:
+                break;
         }
     }
 }

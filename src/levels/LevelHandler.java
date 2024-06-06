@@ -22,18 +22,18 @@ public class LevelHandler {
         this.tiles = tiles;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xLevelOffset) {
         g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
         g.drawImage(layer2, 0, 0, myGame.WIDTH, myGame.HEIGHT,null);
     }
 
 
-    public void check(int[][] mapData, Graphics g) {
+    public void check(int[][] mapData, Graphics g, int xLevelOffset) {
         for (int i = 0; i < mapData.length; i++) {
             for (int j = 0; j < mapData[i].length; j++) {
                 if (mapData[i][j] == 1) {
                     g.setColor(Color.RED);
-                    g.drawRect(j * 32, i * 32, 32, 32);
+                    g.drawRect(j * 32 - xLevelOffset, i * 32, 32, 32);
                 } else {
 //                    g.setColor(Color.GREEN);
 //                    g.drawRect(j * 32, i * 32, 32, 32);
@@ -42,6 +42,10 @@ public class LevelHandler {
 
             }
         }
+    }
+
+    public MyGame getMyGame() {
+        return myGame;
     }
 
     public int[][] getTiles() {

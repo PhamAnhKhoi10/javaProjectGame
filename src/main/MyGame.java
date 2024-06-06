@@ -2,9 +2,10 @@ package main;
 
 import entities.Player;
 import gamestates.Gamestate;
-import levels.Level1;
-import levels.LevelData;
-import levels.LevelHandler;
+import gamestates.Menu;
+import gamestates.Play;
+import levels.*;
+
 
 import java.awt.*;
 
@@ -13,20 +14,24 @@ public class MyGame implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS = 144;
-    private final int UPS = 144;
-    private Player myPlayer;
+    private final int UPS = 180;
     private long lastCheck = 0;
-    private Level1 level1;
+    private Play play;
+    private Menu menu;
 
     // Tile constants
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 1.0f;
     public final static float PLAYER_SCALE = 2.0f;
+    public final static float MENU_SCALE = 2.0f;
     public final static int TILES_WIDTH = 48;
+    public final static int TILES_WHOLE_WIDTH = 80;
     public final static int TILES_HEIGHT = 26;
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public final static int WIDTH = TILES_WIDTH * TILES_SIZE;
+    public final static int WIDTH_OF_WHOLE_LEVEL = TILES_WHOLE_WIDTH * TILES_SIZE;
     public final static int HEIGHT = TILES_HEIGHT * TILES_SIZE;
+
 
     public MyGame() {
         initialize();
@@ -36,15 +41,10 @@ public class MyGame implements Runnable {
         start();
     }
 
-    public Player getMyPlayer() {
-        return myPlayer;
-    }
-
     // Method to initialize the all objects in the game
     private void initialize() {
-        level1 = new Level1(this, LevelData.getTilesLevel1());
-        myPlayer = new Player(20, 0, (int) (PLAYER_SCALE * 128), (int) (PLAYER_SCALE * 80));
-        myPlayer.setCurrentLevel(level1);   // Set the current level of the player
+        menu = new Menu(this);
+        play = new Play(this);
     }
 
     // Method to start the game thread
@@ -57,9 +57,15 @@ public class MyGame implements Runnable {
     public void update () {
         switch (Gamestate.state) {
             case PLAY:
-                myPlayer.update();
+                play.update();
                 break;
             case MENU:
+                menu.update();
+                break;
+            case OPTION:
+                break;
+            case EXIT:
+                System.exit(0);
                 break;
             default:
                 break;
@@ -70,16 +76,22 @@ public class MyGame implements Runnable {
     public void render(Graphics g) {
         switch (Gamestate.state) {
             case PLAY:
-                level1.draw(g);
-                myPlayer.render(g);
+                play.draw(g);
                 break;
             case MENU:
+                menu.draw(g);
                 break;
+            case OPTION:
+                break;
+            case EXIT:
+                System.exit(0);
             default:
                 break;
         }
     }
 
+    // ======================================================================================================================================
+    // Game loop
     @Override
     public void run() {
         // 1 second in nanoseconds
@@ -125,7 +137,18 @@ public class MyGame implements Runnable {
     }
 
     public void windowFocusLost() {
-        myPlayer.resetDir();
+        if (Gamestate.state == Gamestate.PLAY) {
+            play.windowFocusLost();
+        }
+    }
+
+    // getters
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Play getPlay() {
+        return play;
     }
 }
 

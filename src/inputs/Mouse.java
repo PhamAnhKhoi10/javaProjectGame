@@ -1,5 +1,7 @@
 package inputs;
 import java.awt.event.*;
+
+import gamestates.Gamestate;
 import main.GamePanel;
 
 public class Mouse implements MouseListener, MouseMotionListener {
@@ -10,24 +12,49 @@ public class Mouse implements MouseListener, MouseMotionListener {
     }
 
     // These methods return an x and y coordinate of the mouse
+
+    // If the state is MENU, call the mouseClicked method from the Menu class
+    // If the state is PLAY, call the mouseClicked method from the Play class
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            gamePanel.getMyGame().getMyPlayer().setAttacking(true);
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().mouseClicked(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().mouseClicked(e);
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            gamePanel.getMyGame().getMyPlayer().setAttackingCombo(true);
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().mousePressed(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().mousePressed(e);
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        gamePanel.getMyGame().getMyPlayer().setAttacking(false);
-        gamePanel.getMyGame().getMyPlayer().setAttackingCombo(false);
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().mouseReleased(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().mouseReleased(e);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -41,11 +68,26 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        switch (Gamestate.state) {
+            case PLAY:
+                gamePanel.getMyGame().getPlay().mouseDragged(e);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getMyGame().getMenu().mouseMoved(e);
+                break;
+            case PLAY:
+                gamePanel.getMyGame().getPlay().mouseMoved(e);
+                break;
+            default:
+                break;
+        }
     }
 }
