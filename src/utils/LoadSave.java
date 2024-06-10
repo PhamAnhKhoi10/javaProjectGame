@@ -1,17 +1,23 @@
 package utils;
 
 import entities.Entity;
+import entities.SoulReaper;
 import main.MyGame;
 
 import javax.imageio.ImageIO;
+import javax.sql.rowset.BaseRowSet;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
+import static utils.GameConstant.EnemyConstants.SOUL_REAPER;
+import static utils.GameConstant.LevelConstant.LEVEL_1;
 import static utils.GameConstant.MenuConstants.*;
+import static utils.GameConstant.Status.*;
 import static utils.GameConstant.mapConstants.*;
 
 public class LoadSave {
@@ -56,6 +62,24 @@ public class LoadSave {
 
         return image;
     }
+
+
+    public static ArrayList<SoulReaper> getSRList(int currentLevel) {
+        if (currentLevel == LEVEL_1) {
+            ArrayList<SoulReaper> SRList1 = new ArrayList<>();
+            SRList1.add(new SoulReaper(1600, 300));
+            SRList1.add(new SoulReaper(600, 300));
+            return SRList1;
+        } else {
+            ArrayList<SoulReaper> SRList2 = new ArrayList<>();
+            SRList2.add(new SoulReaper(200, 0));
+            SRList2.add(new SoulReaper(700, 500));
+            SRList2.add(new SoulReaper(1400, 0));
+            SRList2.add(new SoulReaper(2000, 500));
+            return SRList2;
+        }
+    }
+
     public static String pathOfMap(int type) {
 
         switch (type) {
@@ -81,8 +105,18 @@ public class LoadSave {
                 return "src/res/Title.png";
             case WALLPAPER:
                 return "src/res/aaaa.jpg";
-            case ENEMY:
-                return "src/res/enemy.png";
+            case BAR:
+                return "src/res/health_power_bar.png";
+            case LEVEL_COMPLETED:
+                return "src/res/completed_sprite.png";
+            case BACKGROUND_3:
+                return "src/res/background_glacial_mountains.png";
+            case MY_LEVEL_2:
+                return "src/res/level2.png";
+            case WIN:
+                return "src/res/Win.png";
+            case LOSE:
+                return "src/res/Death.png";
         }
         return null;
     }

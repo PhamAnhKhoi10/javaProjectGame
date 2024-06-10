@@ -5,6 +5,8 @@ import utils.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import static utils.GameConstant.LevelConstant.*;
 import static utils.GameConstant.mapConstants.*;
 import static utils.LoadSave.pathOfMap;
 
@@ -14,17 +16,16 @@ public class LevelHandler {
     private BufferedImage layer1;
     private BufferedImage layer2;
     private int[][] tiles;
+    private int currenLevel;
+    private BufferedImage map;
 
-    public LevelHandler(MyGame myGame, int[][] tiles) {
+    public LevelHandler(MyGame myGame, int level) {
         this.myGame = myGame;
-        this.layer1 = LoadSave.getMap(pathOfMap(BACKGROUND_0));
-        this.layer2 = LoadSave.getMap(pathOfMap(BACKGROUND_1));
-        this.tiles = tiles;
+        setLevel(level);
     }
 
     public void draw(Graphics g, int xLevelOffset) {
-        g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
-        g.drawImage(layer2, 0, 0, myGame.WIDTH, myGame.HEIGHT,null);
+        drawLevel(currenLevel, g, xLevelOffset);
     }
 
 
@@ -34,12 +35,7 @@ public class LevelHandler {
                 if (mapData[i][j] == 1) {
                     g.setColor(Color.RED);
                     g.drawRect(j * 32 - xLevelOffset, i * 32, 32, 32);
-                } else {
-//                    g.setColor(Color.GREEN);
-//                    g.drawRect(j * 32, i * 32, 32, 32);
-                    ;
                 }
-
             }
         }
     }
@@ -50,5 +46,37 @@ public class LevelHandler {
 
     public int[][] getTiles() {
         return tiles;
+    }
+
+    public void setLevel(int level) {
+        if (level == LEVEL_1) {
+            this.currenLevel = LEVEL_1;
+            this.layer1 = LoadSave.getMap(pathOfMap(BACKGROUND_0));
+            this.layer2 = LoadSave.getMap(pathOfMap(BACKGROUND_1));
+            this.map = LoadSave.getMap(pathOfMap(MY_LEVEL));
+            this.tiles = LevelData.getTilesLevel1();
+        } else if (level == LEVEL_2) {
+            this.currenLevel = LEVEL_2;
+            this.layer1 = LoadSave.getMap(pathOfMap(BACKGROUND_3));
+            this.map = LoadSave.getMap(pathOfMap(MY_LEVEL_2));
+            this.tiles = LevelData.getTilesLevel2();
+        }
+    }
+
+    private void drawLevel(int level, Graphics g, int xLevelOffset) {
+        if (level == LEVEL_1) {
+            g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
+            g.drawImage(layer2, 0, 0, myGame.WIDTH, myGame.HEIGHT,null);
+            g.drawImage(map, 0 - xLevelOffset, 0, null);
+            check(tiles, g, xLevelOffset);
+        } else if (level == LEVEL_2) {
+            g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
+            g.drawImage(map, 0 - xLevelOffset, 0, null);
+            check(tiles, g, xLevelOffset);
+        }
+    }
+
+    public int getCurrenLevel() {
+        return currenLevel;
     }
 }

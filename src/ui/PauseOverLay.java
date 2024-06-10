@@ -128,7 +128,8 @@ public class PauseOverLay {
             }
         } else if (isIn(e, replayButton)) {
             if (replayButton.isMousePressed()) {
-                ;
+                play.changePause();
+                play.resetAll();
             }
         } else if (isIn(e, resumeButton)) {
             if (resumeButton.isMousePressed()) {

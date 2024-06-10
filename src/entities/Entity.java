@@ -13,6 +13,17 @@ public abstract class Entity {
     private int width;
     private int height;
 
+    protected int aniTick, aniIndex;
+    protected int state;
+
+    protected float airSpeed = 0.0f;
+    protected boolean inAir = true;
+
+    protected int maxHealth;
+    protected int currentHealth;
+
+    protected Rectangle2D.Float attackBox;
+    protected float walkSpeed;
 
     public Entity(int x, int y, int width, int height) {
         this.x = x;
@@ -23,7 +34,7 @@ public abstract class Entity {
 
     //==================================================================================================
     // Create the hitbox for detecting collision
-    protected void initHibox(float x, float y, float width, float height) {
+    protected void initHibox(float width, float height) {
         this.hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
@@ -87,8 +98,11 @@ public abstract class Entity {
         return (int) hitbox.getX() / MyGame.TILES_SIZE;
     }
 
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
     //==================================================================================================
     // import the images
     public abstract String pathOfImages(int playerAction);
-    public abstract void loadAnimations();
 }

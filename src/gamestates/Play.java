@@ -1,21 +1,33 @@
 package gamestates;
 
+import entities.EnemyHandler;
 import entities.Player;
-import levels.Level1;
-import levels.LevelData;
 import levels.LevelHandler;
 import main.MyGame;
+import ui.LevelCompletedOverlay;
+import ui.LoseOverlLay;
 import ui.PauseOverLay;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+
+import static utils.GameConstant.LevelConstant.*;
 
 public class Play extends State implements Statemethod{
+    // Level
+    private LevelHandler level;
+    private boolean isStart;
+    
     private Player myPlayer;
-    private LevelHandler level1;
+    private EnemyHandler enemyHandler;
     private boolean pause = false;
+    private boolean gameOver = false;
+    private boolean levelCompleted = false;
     private PauseOverLay pauseOverLay;
+    private LoseOverlLay loseOverlLay;
+    private LevelCompletedOverlay levelCompletedOverlay;
 
     // Variables to change the visible level when the player is moving to the boarder of the screen
     private int xLevelOffset;
@@ -31,16 +43,41 @@ public class Play extends State implements Statemethod{
 
     // Initialize the player and the level
     private void initialize() {
-        level1 = new Level1(super.getMyGame(), LevelData.getTilesLevel1());
-        myPlayer = new Player(20, 0, (int) (MyGame.PLAYER_SCALE * 128), (int) (MyGame.PLAYER_SCALE * 80));
-        myPlayer.setCurrentLevel(level1);   // Set the current level of the player
+        // Set the level of the game (default is level 1)
+        level = new LevelHandler(super.getMyGame(), LEVEL_1);
+
+        // Initialize the player
+        myPlayer = new Player(20, 0, (int) (MyGame.PLAYER_SCALE * 128), (int) (MyGame.PLAYER_SCALE * 80), this);
+        myPlayer.setlevel(level);   // Set the current level of the player
+        
         pauseOverLay = new PauseOverLay(this);
+        loseOverlLay = new LoseOverlLay(this);
+        levelCompletedOverlay = new LevelCompletedOverlay(this);
+        
+        enemyHandler = new EnemyHandler(this);
     }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public void resetAll() {
+        level.setLevel(LEVEL_1);
+        myPlayer.resetAll();
+        enemyHandler.resetAllEnemies(level.getTiles());
+        enemyHandler.addEnemies();
+        gameOver = false;
+        pause = false;
+    }
+
 
     public Player getMyPlayer() {
         return myPlayer;
     }
-
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        enemyHandler.checkEnemyHit(attackBox);
+    }
+    
     // Reset the direction of the player when losing focus on the window
     public void windowFocusLost() {
         myPlayer.resetDir();
@@ -50,12 +87,43 @@ public class Play extends State implements Statemethod{
     // Update and draw the player and the level
     @Override
     public void update() {
-        if (!pause)
-            myPlayer.update();
-            checkCloseToBorder();
-        if (pause)
+//        if (pause) {
+//            pauseOverLay.update();
+//        } else if (levelCompleted) {
+//            levelCompletedOverlay.update();
+//        } else if (!gameOver) {
+//            myPlayer.update();
+//            enemyHandler.update(level.getTiles(), myPlayer);
+//            checkCloseToBorder();
+//            if (enemyHandler.isAllDefeated()) {
+//                levelCompleted = true;
+//            }
+//        } else {
+//            loseOverlLay.update();
+//        }
+        if (pause){
             pauseOverLay.update();
+            return;
+        }
+
+        if(levelCompleted){
+            levelCompletedOverlay.update();
+            return;
+        }
+
+        if (gameOver){
+            loseOverlLay.update();
+            return;
+        }
+
+        myPlayer.update();
+        enemyHandler.update(level.getTiles(), myPlayer);
+        checkCloseToBorder();
+        if (enemyHandler.isAllDefeated()) {
+            levelCompleted = true;
+        }
     }
+
 
     private void checkCloseToBorder() {                  // Move to the border -> check | Not move after check (xLevelOffset = 5)
         int playerX = (int) getMyPlayer().getHitbox().x; // playerX = 85                | playerX = 85
@@ -76,20 +144,35 @@ public class Play extends State implements Statemethod{
         }
     }
 
-
-
     public int getxLevelOffset() {
         return xLevelOffset;
     }
 
+    public EnemyHandler getEnemyHandler() {
+        return enemyHandler;
+    }
+
+    public LevelHandler getLevel() {
+        return level;
+    }
+
+    public void setLevelCompleted(boolean levelCompleted) {
+        this.levelCompleted = levelCompleted;
+    }
+
     @Override
     public void draw(Graphics g) {
-        level1.draw(g, xLevelOffset);
+        level.draw(g, xLevelOffset);
         myPlayer.render(g, xLevelOffset);
+        enemyHandler.draw(g, xLevelOffset);
         if (pause) {
             g.setColor(new Color(0, 0, 0, 200));
             g.fillRect(0, 0, MyGame.WIDTH, MyGame.HEIGHT);
             pauseOverLay.draw(g);
+        } else if (gameOver) {
+            loseOverlLay.draw(g);
+        } else if (levelCompleted) {
+            levelCompletedOverlay.draw(g);
         }
     }
 
@@ -97,65 +180,80 @@ public class Play extends State implements Statemethod{
     // Getting the keyboard and mouse event whenever the state is PLAY
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            myPlayer.setAttacking(true);
-        }
+        if (!gameOver)
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                myPlayer.setAttackingCombo(true);
+            }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON3) {
-           myPlayer.setAttackingCombo(true);
-        }
+        if (!gameOver)
+            if (pause) {
+                pauseOverLay.mousePressed(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mousePressed(e);
+            }
 
-        if (pause) {
-            pauseOverLay.mousePressed(e);
-        }
+        loseOverlLay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (pause) {
-            pauseOverLay.mouseReleased(e);
-        }
+        if (!gameOver)
+            if (pause) {
+                pauseOverLay.mouseReleased(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mouseReleased(e);
+            }
+        loseOverlLay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (pause) {
-            pauseOverLay.mouseMoved(e);
-        }
+        if (!gameOver)
+            if (pause) {
+                pauseOverLay.mouseMoved(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mouseMoved(e);
+            }
+       loseOverlLay.mouseMoved(e);
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (pause) {
-            pauseOverLay.mouseDragged(e);
-        }
+        if (!gameOver)
+            if (pause) {
+                pauseOverLay.mouseDragged(e);
+            }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-            myPlayer.setUp(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-            myPlayer.setDown(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-            myPlayer.setLeft(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-            myPlayer.setRight(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            myPlayer.setJump(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            changePause();
+        if (gameOver) {
+            loseOverlLay.keyPressed(e);
+        }  else {
+            if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+//                myPlayer.setUp(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+//                myPlayer.setDown(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+                myPlayer.setLeft(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+                myPlayer.setRight(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                myPlayer.setJump(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                changePause();
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-            myPlayer.setUp(false);
+//            myPlayer.setUp(false);
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-            myPlayer.setDown(false);
+//            myPlayer.setDown(false);
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             myPlayer.setLeft(false);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
