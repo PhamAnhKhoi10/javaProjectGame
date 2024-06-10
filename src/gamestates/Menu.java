@@ -2,10 +2,8 @@ package gamestates;
 
 import main.MyGame;
 import ui.ButtonMenu;
-import utils.GameConstant;
 import utils.LoadSave;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -24,6 +22,7 @@ public class Menu extends State implements Statemethod {
         loadButtons();
     }
 
+    // Load images for the menu
     public void loadBackground() {
         menuBackground = LoadSave.getMap(LoadSave.pathOfMap(MENU_BACKGROUND));
         gameTitle = LoadSave.getMap(LoadSave.pathOfMap(GAME_TITLE));
@@ -50,6 +49,7 @@ public class Menu extends State implements Statemethod {
         }
     }
 
+    // Draw the menu
     @Override
     public void draw(Graphics g) {
         g.drawImage(wallpaper, 0, 0, MyGame.WIDTH, MyGame.HEIGHT, null);

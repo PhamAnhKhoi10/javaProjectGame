@@ -1,10 +1,8 @@
 package main;
 
-import entities.Player;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Play;
-import levels.*;
 
 
 import java.awt.*;
@@ -143,7 +141,7 @@ public class MyGame implements Runnable {
         }
     }
 
-    // getters
+    // ==================================================SETTER AND GETTER==============================================================
     public Menu getMenu() {
         return menu;
     }

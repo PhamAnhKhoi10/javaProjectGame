@@ -57,7 +57,7 @@ public class PauseOverLay {
         sfxButton = new SoundButton(soundX, sfxY, SOUND_SIZE, SOUND_SIZE);
     }
 
-
+    // Load the images
     public void loadImages() {
         backgroundImage = LoadSave.getMap(LoadSave.pathOfMap(PAUSE_BACKGROUND));
         width =  (int) (backgroundImage.getWidth() * MyGame.MENU_SCALE);
@@ -67,6 +67,7 @@ public class PauseOverLay {
         backgroundY = 0;
     }
 
+    // Draw the overlay
     public void draw(Graphics g) {
         g.drawImage(backgroundImage, backgroundX, backgroundY, width, height + 10, null);
         musicButton.draw(g);
@@ -77,6 +78,7 @@ public class PauseOverLay {
         volumeButton.draw(g);
     }
 
+    // Update the overlay
     public void update() {
         musicButton.update();
         sfxButton.update();

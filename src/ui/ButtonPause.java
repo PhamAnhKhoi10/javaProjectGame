@@ -18,6 +18,7 @@ public class ButtonPause {
         bounds = new Rectangle(x, y, width, height);
     }
 
+    // =================== GETTERS AND SETTERS ===================
     public int getX() {
         return x;
     }

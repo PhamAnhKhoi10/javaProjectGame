@@ -25,6 +25,7 @@ public class VolumeButton extends ButtonPause {
         loadImages();
     }
 
+    // Load the images
     private void loadImages() {
         BufferedImage temp = LoadSave.getMap(LoadSave.pathOfMap(VOLUME_BUTTON));
         images = new BufferedImage[3];
@@ -63,6 +64,7 @@ public class VolumeButton extends ButtonPause {
         mousePressed = false;
     }
 
+    // =================== GETTERS AND SETTERS ===================
     public boolean isMouseOver() {
         return mouseOver;
     }

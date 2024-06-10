@@ -62,6 +62,8 @@ public class UrmButton extends ButtonPause {
         this.mousePressed = mousePressed;
     }
 
+    // ===================================================================
+    // Draw the button
     public void draw(Graphics g) {
         g.drawImage(images[index], x, y, (int) (URM_SIZE * MyGame.MENU_SCALE), (int) (URM_SIZE * MyGame.MENU_SCALE), null);
     }

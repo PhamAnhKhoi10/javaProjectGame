@@ -1,11 +1,7 @@
 package entities;
 
 import main.MyGame;
-import utils.HelpMethods;
-import utils.LoadSave;
-
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 import static utils.GameConstant.Directions.*;
 import static utils.GameConstant.EnemyConstants.*;
@@ -15,13 +11,13 @@ import static utils.GameConstant.Status.getMaxHealth;
 import static utils.HelpMethods.*;
 
 public abstract class Enemy extends Entity {
+    // Enemy animation
     protected int enemyType;
     protected int aniSpeed = 15;
     protected int animationIndex, startIndex, endIndex;
 
+    // Boolean start the game
     protected boolean firstUpdate = true;
-    // Gravity
-//    protected float gravity = 0.04f * MyGame.PLAYER_SCALE;
 
     // Patrolling
     protected int walkDirection = LEFT;
@@ -31,9 +27,9 @@ public abstract class Enemy extends Entity {
 
     // Attack
     protected float attackRange = MyGame.TILES_SIZE * 2;
-    protected boolean attackCheck;
 
-    // Health
+    protected boolean attackCheck;
+    // check if the enemy is active
     protected boolean active = true;
 
     public Enemy(int x, int y, int width, int height, int enemyType) {
@@ -44,7 +40,7 @@ public abstract class Enemy extends Entity {
         this.walkSpeed = 1.0f * MyGame.SCALE;
     }
 
-    // Update the enemy
+    // Enemy hurt
     protected void hurt(int damage) {
         currentHealth -= damage;
         if (currentHealth <= 0) {
@@ -53,7 +49,6 @@ public abstract class Enemy extends Entity {
             newEnemyState(HURT);
         }
     }
-
         /*Idle: 0 -> 7
         * Walk: 8 -> 15
         * Attack: 16 -> 25
@@ -61,7 +56,8 @@ public abstract class Enemy extends Entity {
         * Death: 29 -> 38
         * Cast: 39 -> 47
         * Spell: 48 -> 63 */
-
+// =========================================UPDATING THE ENEMY=========================================
+    // Update animation
     protected void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -77,6 +73,7 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    // check if the game is first updated
     protected void firstUpdateCheck(int [][] tiles) {
         if (firstUpdate) {
             if (!isOnGround(getHitbox(), tiles)) {
@@ -85,6 +82,22 @@ public abstract class Enemy extends Entity {
 
             firstUpdate = false;
         }
+    }
+
+    // reset all the game
+    public void reset(int [][] tiles) {
+        getHitbox().x = getX();
+        getHitbox().y = getY();
+        currentHealth = maxHealth;
+        firstUpdate = true;
+        newEnemyState(IDLE);
+
+        // Reset the inAir flag and airSpeed value
+        inAir = true;
+        airSpeed = 0;
+
+        updateInAir(tiles);
+        active = true;
     }
 
     protected void updateInAir(int tiles[][]) {
@@ -163,6 +176,7 @@ public abstract class Enemy extends Entity {
             attackCheck = true;
         }
     }
+// =========================================GETTERS AND SETTERS=========================================
 
     public int getAnimationIndex() {
         return animationIndex;
@@ -190,7 +204,7 @@ public abstract class Enemy extends Entity {
             walkDirection = LEFT;
         }
     }
-
+// =========================================GET THE PATH OF IMAGES=========================================
     @Override
     public String pathOfImages(int enemyType) {
         switch (enemyType) {
@@ -201,18 +215,4 @@ public abstract class Enemy extends Entity {
         return null;
     }
 
-    public void reset(int [][] tiles) {
-        getHitbox().x = getX();
-        getHitbox().y = getY();
-        currentHealth = maxHealth;
-        firstUpdate = true;
-        newEnemyState(IDLE);
-
-        // Reset the inAir flag and airSpeed value
-        inAir = true;
-        airSpeed = 0;
-
-        updateInAir(tiles);
-        active = true;
-    }
 }

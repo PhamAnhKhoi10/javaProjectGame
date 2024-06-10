@@ -7,9 +7,6 @@ import java.awt.geom.Rectangle2D;
 
 import static utils.GameConstant.Directions.*;
 import static utils.GameConstant.EnemyConstants.*;
-import static utils.GameConstant.MenuConstants.ENEMY;
-import static utils.GameConstant.Status.getEnemyDamage;
-import static utils.HelpMethods.*;
 
 public class SoulReaper extends Enemy {
     // Attack range
@@ -21,6 +18,7 @@ public class SoulReaper extends Enemy {
         initAttackBox();
     }
 
+    // =========================================ATTACK BOX=======================================
     public void initAttackBox() {
         attackBoxOffsetX = (int) (30 * MyGame.PLAYER_SCALE);
         attackBox = new Rectangle2D.Float(getX(), getY(), (int) (125 * MyGame.PLAYER_SCALE), (int) (65 * MyGame.PLAYER_SCALE));
@@ -34,8 +32,9 @@ public class SoulReaper extends Enemy {
         }
 
         attackBox.y = getHitbox().y;
-
     }
+
+    // =========================================UPDATING=======================================
 
     public void update(int [][] tiles, Player player) {
         updateAnimationTick();
@@ -43,6 +42,7 @@ public class SoulReaper extends Enemy {
         updateAttackBox();
     }
 
+    // Movement of the enemy
     public void updateMovement(int tiles[][], Player player) {
         firstUpdateCheck(tiles);
         // If the enemy is in the air

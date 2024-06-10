@@ -25,31 +25,21 @@ public class LoseOverlLay {
         createButton();
     }
 
+    // Update the overlay
     public void update(){
-        System.out.println("LoseOverlay update");
         menuButton.update();
         restartButton.update();
     }
 
+    // Draw the overlay
     public void draw(Graphics g) {
         g.setColor(new Color(0, 0, 0, 200));
         g.fillRect(0, 0, MyGame.WIDTH, MyGame.HEIGHT);
         g.drawImage(image, imageX, imageY, imageWidth, imageHeight, null);
         menuButton.draw(g);
         restartButton.draw(g);
-
-//        g.setColor(Color.WHITE);
-//        g.setFont(new Font("Arial", Font.BOLD, 50));
-//        g.drawString("You Lose", MyGame.WIDTH/2 - 200, MyGame.HEIGHT/2);
-//        g.drawString("Press Enter to restartButton", MyGame.WIDTH/2 - 200, MyGame.HEIGHT/ 2 + 100);
     }
 
-    public void keyPressed (KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            play.resetAll();
-            Gamestate.state = Gamestate.MENU;
-        }
-    }
 
     private void createButton() {
         int menuX = (int) (305 * MyGame.MENU_SCALE);
@@ -67,6 +57,14 @@ public class LoseOverlLay {
         imageHeight = image.getHeight() * 2;
         imageX = (MyGame.WIDTH- imageWidth) / 2;
         imageY = (MyGame.HEIGHT - imageHeight) / 2 - 50;
+    }
+
+    // ================== KEY AND MOUSE INPUT ==================
+    public void keyPressed (KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            play.resetAll();
+            Gamestate.state = Gamestate.MENU;
+        }
     }
 
     public void mouseMoved(MouseEvent e) {

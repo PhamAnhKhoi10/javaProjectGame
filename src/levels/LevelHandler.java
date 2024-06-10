@@ -68,11 +68,11 @@ public class LevelHandler {
             g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
             g.drawImage(layer2, 0, 0, myGame.WIDTH, myGame.HEIGHT,null);
             g.drawImage(map, 0 - xLevelOffset, 0, null);
-            check(tiles, g, xLevelOffset);
+//            check(tiles, g, xLevelOffset);
         } else if (level == LEVEL_2) {
             g.drawImage(layer1, 0, 0, myGame.WIDTH, myGame.HEIGHT, null);
             g.drawImage(map, 0 - xLevelOffset, 0, null);
-            check(tiles, g, xLevelOffset);
+//            check(tiles, g, xLevelOffset);
         }
     }
 

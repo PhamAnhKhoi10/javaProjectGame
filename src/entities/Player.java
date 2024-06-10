@@ -22,7 +22,6 @@ public class Player extends Entity{
     private Play play;
     private BufferedImage[] subImages;
     private BufferedImage image;
-//    private int state = IDLE;
 
     // drawOffsetX and drawOffsetY is the offset of the image
     // to make the hitbox and the image align
@@ -37,7 +36,6 @@ public class Player extends Entity{
     // Action
     private boolean moving = false, attacking = false, attackingCombo = false;
     private boolean left = false, right = false, jump = false;
-//    private float speed = 2.0f;
 
     // Gravity
     private float jumpSpeed = -3.0f * MyGame.PLAYER_SCALE;
@@ -51,15 +49,11 @@ public class Player extends Entity{
     // x and y due to the game coordinate
     private int statusBarX = (int) (10 * MyGame.SCALE);
     private int statusBarY = (int) (15 * MyGame.SCALE);
-
     private int healthBarWidth = (int) (150 * MyGame.SCALE);
     private int healthBarHeight = (int) (4 * MyGame.SCALE);
     // x and y due to the status bar coordinate
     private int healthBarXStart = (int) (34 * MyGame.SCALE);
     private int healthBarYStart = (int) (14 * MyGame.SCALE);
-
-//    private int maxHealth = 100;
-//    private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
     // Attack
@@ -79,6 +73,7 @@ public class Player extends Entity{
         initAttackBox();
     }
 
+    // Create the attack box and update it
     public void initAttackBox() {
         attackBox = new Rectangle2D.Float(getX(), getY(), 150, getHitbox().height);
     }
@@ -94,6 +89,7 @@ public class Player extends Entity{
 
     }
 
+    // =========================================SETTER AND GETTER=======================================
     public boolean isLeft() {
         return left;
     }
@@ -148,7 +144,8 @@ public class Player extends Entity{
         updateHealthBar();
         updateAttackBox();
     }
-
+    // ==================================================================================================
+    // Render the player
     public void render(Graphics g, int xLevelOffset) {
         g.drawImage(subImages[aniIndex], (int) (getHitbox().x - drawOffsetX) - xLevelOffset + xFlip, (int) (getHitbox().y - drawOffsetY), super.getWidth() * wFlip,super.getHeight(),null);
 //        drawHitbox(g, xLevelOffset);
@@ -159,6 +156,8 @@ public class Player extends Entity{
 //        g.drawRect((int) (attackBox.x - xLevelOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
     }
 
+    // =========================================HEALTH=========================================================
+    // Draw the status bar
     public void drawBar(Graphics g) {
         g.drawImage(statusBar, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
         g.setColor(Color.RED);
@@ -179,7 +178,7 @@ public class Player extends Entity{
     public void updateHealthBar() {
         healthWidth = (int) (currentHealth / (float) maxHealth * healthBarWidth);
     }
-
+// =========================================ANIMATIONS=========================================================
     // Update the animation
     public void updateAnimations() {
         aniTick++;
@@ -311,7 +310,6 @@ public class Player extends Entity{
         airSpeed = 0;
     }
 
-    // ti nua bo ySpeed
     public void updateXPosition(int xSpeed) {
         if (HelpMethods.CanMove(getHitbox().x + xSpeed, getHitbox().y, getHitbox().width, getHitbox().height, getLevel().getTiles())) {
             getHitbox().x += xSpeed;
@@ -367,6 +365,7 @@ public class Player extends Entity{
         }
     }
 
+    // =======================================================================================================
     @Override
     // Get the path of the images
     public String pathOfImages(int state) {
@@ -434,7 +433,6 @@ public class Player extends Entity{
         }
         return null;
     }
-
 
     public void reset(int[][] tiles) {
         getHitbox().x = 20;

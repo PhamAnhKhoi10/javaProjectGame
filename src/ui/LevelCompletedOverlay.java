@@ -27,6 +27,7 @@ public class LevelCompletedOverlay {
         createButton();
     }
 
+    // Create the buttons and load the images
     private void createButton() {
         int menuX = (int) (305 * MyGame.MENU_SCALE);
         int nextX = (int) (405 * MyGame.MENU_SCALE);
@@ -44,6 +45,7 @@ public class LevelCompletedOverlay {
         backgroundY = (int) (75 * MyGame.MENU_SCALE);
     }
 
+    // Draw the buttons
     public void draw(Graphics g) {
         g.drawImage(backgroundImage, backgroundX, backgroundY, width, height, null);
         menuButton.draw(g);

@@ -77,7 +77,8 @@ public class SoundButton extends ButtonPause {
            columnIndex = 2;
         }
     }
-
+    // ===================================================================
+    // Draw the button
     public void draw(Graphics g) {
         g.drawImage(soundImage[rowIndex][columnIndex], x, y, (int) (width * MyGame.MENU_SCALE), (int) (height * MyGame.MENU_SCALE), null);
     }

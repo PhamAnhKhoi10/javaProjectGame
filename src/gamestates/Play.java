@@ -49,7 +49,8 @@ public class Play extends State implements Statemethod{
         // Initialize the player
         myPlayer = new Player(20, 0, (int) (MyGame.PLAYER_SCALE * 128), (int) (MyGame.PLAYER_SCALE * 80), this);
         myPlayer.setlevel(level);   // Set the current level of the player
-        
+
+        // Initialize the pause, lose, and level completed screen
         pauseOverLay = new PauseOverLay(this);
         loseOverlLay = new LoseOverlLay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -57,10 +58,11 @@ public class Play extends State implements Statemethod{
         enemyHandler = new EnemyHandler(this);
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        enemyHandler.checkEnemyHit(attackBox);
     }
 
+    // reset the player and the level
     public void resetAll() {
         level.setLevel(LEVEL_1);
         myPlayer.resetAll();
@@ -70,12 +72,30 @@ public class Play extends State implements Statemethod{
         pause = false;
     }
 
+    // =======================================SETTER AND GETTER==================================================
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 
     public Player getMyPlayer() {
         return myPlayer;
     }
-    public void checkEnemyHit(Rectangle2D.Float attackBox) {
-        enemyHandler.checkEnemyHit(attackBox);
+
+
+    public int getxLevelOffset() {
+        return xLevelOffset;
+    }
+
+    public EnemyHandler getEnemyHandler() {
+        return enemyHandler;
+    }
+
+    public LevelHandler getLevel() {
+        return level;
+    }
+
+    public void setLevelCompleted(boolean levelCompleted) {
+        this.levelCompleted = levelCompleted;
     }
     
     // Reset the direction of the player when losing focus on the window
@@ -87,20 +107,6 @@ public class Play extends State implements Statemethod{
     // Update and draw the player and the level
     @Override
     public void update() {
-//        if (pause) {
-//            pauseOverLay.update();
-//        } else if (levelCompleted) {
-//            levelCompletedOverlay.update();
-//        } else if (!gameOver) {
-//            myPlayer.update();
-//            enemyHandler.update(level.getTiles(), myPlayer);
-//            checkCloseToBorder();
-//            if (enemyHandler.isAllDefeated()) {
-//                levelCompleted = true;
-//            }
-//        } else {
-//            loseOverlLay.update();
-//        }
         if (pause){
             pauseOverLay.update();
             return;
@@ -142,22 +148,6 @@ public class Play extends State implements Statemethod{
         } else if (xLevelOffset > maxOffsetx) {
             xLevelOffset = maxOffsetx;
         }
-    }
-
-    public int getxLevelOffset() {
-        return xLevelOffset;
-    }
-
-    public EnemyHandler getEnemyHandler() {
-        return enemyHandler;
-    }
-
-    public LevelHandler getLevel() {
-        return level;
-    }
-
-    public void setLevelCompleted(boolean levelCompleted) {
-        this.levelCompleted = levelCompleted;
     }
 
     @Override

@@ -9,20 +9,27 @@ public abstract class Entity {
     private int x;
     private int y;
 
+    // hitbox for collision detection
     private Rectangle2D.Float hitbox;
     private int width;
     private int height;
 
+    // animation update
     protected int aniTick, aniIndex;
     protected int state;
 
+    // gravity
     protected float airSpeed = 0.0f;
     protected boolean inAir = true;
 
+    // health
     protected int maxHealth;
     protected int currentHealth;
 
+    // attack
     protected Rectangle2D.Float attackBox;
+
+    // movement
     protected float walkSpeed;
 
     public Entity(int x, int y, int width, int height) {
@@ -44,12 +51,12 @@ public abstract class Entity {
         g.drawRect((int)hitbox.x - xLevelOffset, (int)hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
+    // =========================================SETTER AND GETTER=======================================
 
     public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
-    //==================================================================================================
-    // Setters and Getters
+
     public void setX(int x) {
         this.x = x;
     }

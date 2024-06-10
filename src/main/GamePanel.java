@@ -3,8 +3,6 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 import inputs.*;
-import static main.MyGame.WIDTH;
-import static main.MyGame.HEIGHT;
 
 public class GamePanel extends JPanel {
     private Mouse mouseInput;

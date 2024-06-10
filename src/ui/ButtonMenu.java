@@ -28,6 +28,7 @@ public class ButtonMenu {
         initialize();
     }
 
+    // Initialize the button and load the images
     public void initialize() {
         buttonBounds = new Rectangle(x - xOffsetCenter, y, WIDTH, HEIGHT);
     }
@@ -41,6 +42,7 @@ public class ButtonMenu {
         }
     }
 
+    // Draw the button
     public void draw(Graphics g) {
         g.drawImage(images[index], x - xOffsetCenter, y, (int) (WIDTH * MENU_SCALE), (int) (HEIGHT * MENU_SCALE), null);
 //        g.drawImage(img, x - xOffsetCenter, y, WIDTH, HEIGHT, null);
@@ -57,6 +59,7 @@ public class ButtonMenu {
         }
     }
 
+    // ============================================ GETTERS AND SETTERS ============================================
     public boolean isMousePressed() {
         return mousePressed;
     }
@@ -73,14 +76,15 @@ public class ButtonMenu {
         this.mouseOver = mouseOver;
     }
 
-    public void applyGamestate() {
-        Gamestate.state = gamestate;
-    }
-
     public Rectangle getButtonBounds() {
         return buttonBounds;
     }
 
+    public void applyGamestate() {
+        Gamestate.state = gamestate;
+    }
+
+    // Reset the mouse booleans
     public void resetMouseBooleans() {
         mouseOver = false;
         mousePressed = false;
